@@ -1173,12 +1173,12 @@ manage(Window w, XWindowAttributes *wa)
 	c->bw = borderpx;
 
 	selmon->tagset[selmon->seltags] &= ~scratchtag;
-	if (!strcmp(c->name, scratchpadname)) {
-		c->mon->tagset[c->mon->seltags] |= c->tags = scratchtag;
-		c->isfloating = True;
-		c->x = c->mon->wx + (c->mon->ww / 2 - WIDTH(c) / 2);
-		c->y = c->mon->wy + (c->mon->wh / 2 - HEIGHT(c) / 2);
-	}
+	/*if (!strcmp(c->name, scratchpadname)) {*/
+		/*c->mon->tagset[c->mon->seltags] |= c->tags = scratchtag;*/
+		/*c->isfloating = True;*/
+		/*c->x = c->mon->wx + (c->mon->ww / 2 - WIDTH(c) / 2);*/
+		/*c->y = c->mon->wy + (c->mon->wh / 2 - HEIGHT(c) / 2);*/
+	/*}*/
 
 	wc.border_width = c->bw;
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);

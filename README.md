@@ -19,6 +19,7 @@ This is suckless, mmmbud, the source code is the documentation! Check out `confi
 - shiftview to cycle tags
 - gaps around windows and bar
 - dwmc
+- gridmode
 
 ## Please install `libxft-rbgra`!
 
