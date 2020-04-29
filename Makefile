@@ -23,7 +23,7 @@ dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
 clean:
-	rm -f dwm ${OBJ} dwm-${VERSION}.tar.gz *.orig *.rej
+	rm -f dwm ${OBJ} dwm-${VERSION}.tar.gz *.orig *.rej *.pdf
 
 dist: clean
 	mkdir -p dwm-${VERSION}
@@ -34,6 +34,7 @@ dist: clean
 	rm -rf dwm-${VERSION}
 
 install: all
+	pandoc 'help.md' -s -o 'help.pdf'
 	mkdir -p ${DESTDIR}${PREFIX}/bin
 	cp -f dwm dwmc ${DESTDIR}${PREFIX}/bin
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm
@@ -41,12 +42,12 @@ install: all
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	mkdir -p ${DESTDIR}${PREFIX}/share/dwm
-	cp -f help.mom ${DESTDIR}${PREFIX}/share/dwm
-	chmod 644 ${DESTDIR}${PREFIX}/share/dwm/help.mom
+	cp -f help.pdf ${DESTDIR}${PREFIX}/share/dwm
+	chmod 644 ${DESTDIR}${PREFIX}/share/dwm/help.pdf
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
-		${DESTDIR}${PREFIX}/share/dwm/help.mom\
+		${DESTDIR}${PREFIX}/share/dwm/help.pdf\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1
 
 .PHONY: all options clean dist install uninstall

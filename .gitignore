@@ -1,5 +1,5 @@
 *.o
 *.orig
 *.rej
-larbs.pdf
+*.pdf
 patches

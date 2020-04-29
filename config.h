@@ -47,14 +47,14 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
 #include "fibonacci.c"
 #include "gaplessgrid.c"
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "[]=",      tile },					// 0 tiled (multiple neightboring clients)
-	{ "><>",      NULL },					// 1 floating (floating client)
-	{ "|M|",      centeredmaster },			// 2 centered master (neightboring clients)
-	{ ">M>",      centeredfloatingmaster },	// 3 floating centered master
- 	{ "[@]",      spiral },					// 4 fibonacci (neightboring clients)
- 	{ "[\\]",     dwindle },				// 5 modified fibonacci (neightboring clients)
-	{ "###",      gaplessgrid },			// 6 grid layout
+	/* symbol	arrange function */
+	{ "[]=",	tile },						// 0 tiled (multiple neightboring clients)
+	{ "><>",	NULL },						// 1 floating (floating client)
+	{ "|M|",	centeredmaster },			// 2 centered master (neightboring clients)
+	{ ">M>",	centeredfloatingmaster },	// 3 floating centered master
+ 	{ "[@]",	spiral },					// 4 fibonacci (neightboring clients)
+ 	{ "[\]",	dwindle },					// 5 modified fibonacci (neightboring clients)
+	{ "###",	gaplessgrid },				// 6 grid layout
 };
 
 /* key definitions */
@@ -80,7 +80,6 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
-//static const char *explorer[]  = { "ranger", NULL };
 
 // regular symbols are defined at /user/include/X11/keysymdef.h
 // special symbols are defined at /usr/include/X11/XF86keysym.h
@@ -102,7 +101,6 @@ static Key keys[] = {
 	/* modifier				key							function		argument */
 	{ MODKEY|ShiftMask,		XK_Escape,					spawn,			SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Close Xorg?\")\" = Yes ] && killall Xorg") },
 	{ MODKEY,				XK_apostrophe,				spawn,			SHCMD("dmenuunicode") },
-	// here
 	{ MODKEY,				XK_0,						view,			{.ui = ~0 } }, // displays every open client
 	{ MODKEY|ShiftMask,		XK_0,						tag,			{.ui = ~0 } }, // show current client in every tag
 	{ MODKEY|ShiftMask,		XK_BackSpace,				spawn,			SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Reboot computer?\")\" = Yes ] && sudo -A reboot") }, // reboot
@@ -110,11 +108,10 @@ static Key keys[] = {
 	{ MODKEY,				XK_q,						killclient,		{0} }, // exit client
 	{ MODKEY,				XK_w,						spawn,			SHCMD("$BROWSER") }, // opens browser
 	{ MODKEY|ShiftMask,		XK_w,						spawn,			SHCMD("st -e sudo nmtui") }, // opens wifi connector assistance
-	{ MODKEY,				XK_r,						spawn,			SHCMD("st -e ranger") }, // open file manager
+	{ MODKEY,				XK_r,						spawn,			SHCMD("st -e lf") }, // open file manager
 	{ MODKEY,				XK_t,						setlayout,		{.v = &layouts[0]} }, // change layout (see above)
-	{ MODKEY,				XK_u,						setlayout,		{.v = &layouts[2]} }, // change layout (see above)
 	{ MODKEY,				XK_i,						setlayout,		{.v = &layouts[3]} }, // change layout (see above)
-	{ MODKEY,				XK_y,						setlayout,		{.v = &layouts[4]} }, // change layout (see above)
+	{ MODKEY,				XK_y,						setlayout,		{.v = &layouts[5]} }, // change layout (see above)
 	{ MODKEY,				XK_g,						setlayout,		{.v = &layouts[6]} }, // change layout (see above)
 	{ MODKEY,				XK_o,						incnmaster,		{.i = +1 } }, // horizontal mode
 	{ MODKEY|ShiftMask,		XK_o,						incnmaster,		{.i = -1 } }, // vertical mode
@@ -146,13 +143,13 @@ static Key keys[] = {
 	{ MODKEY,				XK_Page_Up,					shiftview,		{ .i = -1 } },
 	{ MODKEY,				XK_Page_Down,				shiftview,		{ .i = 1 } },
 	{ MODKEY,				XK_Insert,					spawn,			SHCMD("notify-send \"Clipboard:\" \"$(xclip -o -selection clipboard)\"") }, // shows contents of clipboard
-	{ MODKEY,				XK_F1,						spawn,			SHCMD("groff -mom /usr/local/share/dwm/help.mom -Tpdf | zathura -") }, // opens-up help PDF
-	{ MODKEY,				XK_F2,						quit,			{0} },
+	{ MODKEY,				XK_F1,						spawn,			SHCMD("zathura /usr/local/share/dwm/help.pdf") }, // opens-up help PDF
+	//{ MODKEY,				XK_F2,						quit,			{0} },
 	{ MODKEY,				XK_F3,						spawn,			SHCMD("displayselect") }, // selects display
 	{ MODKEY,				XK_F4,						spawn,			SHCMD("[ \"$(printf \"No\\nYes\" | dmenu -i -nb darkred -sb red -sf white -nf gray -p \"Hibernate computer?\")\" = Yes ] && sudo -A zzz") }, // hibernate computer
-	{ MODKEY,				XK_F5,						xrdb,			{.v = NULL } },
-	{ MODKEY,				XK_F6,						spawn,			SHCMD("torwrap") }, // Activates torrent daemon ?
-	{ MODKEY,				XK_F7,						spawn,			SHCMD("td-toggle") }, // Activates torrent daemon
+	{ MODKEY,				XK_F5,						spawn,			SHCMD("cnote") }, // opens notes
+	{ MODKEY|ShiftMask,		XK_F5,						spawn,			SHCMD("cnote -c") }, // compiles & opens notes
+	{ MODKEY,				XK_F7,						spawn,			SHCMD("td-toggle") }, // Toggles torrent daemon
 	{ MODKEY,				XK_F9,						spawn,			SHCMD("dmenumount") }, // interactive mount script
 	{ MODKEY,				XK_F10,						spawn,			SHCMD("dmenuumount") }, // interactive unmount script
 	{ MODKEY,				XK_space,					zoom,			{0} }, // make the current client the master client
@@ -163,8 +160,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,		XK_Print,					spawn,			SHCMD("dmenurecord kill") }, // kills recording
 	{ MODKEY,				XK_Scroll_Lock,				spawn,			SHCMD("killall screenkey || screenkey &") },
 	{ 0,					XF86XK_AudioMute,			spawn,			SHCMD("lmc toggle") }, // toggles audio
-	{ 0,					XF86XK_AudioRaiseVolume,	spawn,			SHCMD("lmc up 10") }, // increases audio volume
-	{ 0,					XF86XK_AudioLowerVolume,	spawn,			SHCMD("lmc down 10") }, // decreases audio volume
+	{ 0,					XF86XK_AudioRaiseVolume,	spawn,			SHCMD("lmc up 2") }, // increases audio volume
+	{ 0,					XF86XK_AudioLowerVolume,	spawn,			SHCMD("lmc down 2") }, // decreases audio volume
 	{ 0,					XF86XK_AudioPrev,			spawn,			SHCMD("mpc prev") }, // previous music
 	{ 0,					XF86XK_AudioNext,			spawn,			SHCMD("mpc next") }, // next music
 	{ 0,					XF86XK_AudioPause,			spawn,			SHCMD("mpc pause") }, // pause music
@@ -187,13 +184,13 @@ static Key keys[] = {
 	{ 0,					XF86XK_ScreenSaver,			spawn,			SHCMD("slock & xset dpms force off; mpc pause; pauseallmpv") }, // locks the screen and stops all media
 	{ 0,					XF86XK_TaskPane,			spawn,			SHCMD("st -e htop") }, // opens a terminal, brings htop
 	//{ 0,					XF86XK_Mail,				spawn,			SHCMD("st -e neomutt ; pkill -RTMIN+12 dwmblocks") }, // opens neomutt
-	{ 0,					XF86XK_MyComputer,			spawn,			SHCMD("st -e ranger") }, // opens file explorer at root
+	{ 0,					XF86XK_MyComputer,			spawn,			SHCMD("st -e lf") }, // opens file explorer at root
 	{ 0,					XF86XK_Launch1,				spawn,			SHCMD("xset dpms force off") }, // shutsdown screen??
 	{ 0,					XF86XK_TouchpadToggle,		spawn,			SHCMD("(synclient | grep 'TouchpadOff.*1' && synclient TouchpadOff=0) || synclient TouchpadOff=1") }, // toggles touchpad
 	{ 0,					XF86XK_TouchpadOff,			spawn,			SHCMD("synclient TouchpadOff=1") }, // enables touchpas
 	{ 0,					XF86XK_TouchpadOn,			spawn,			SHCMD("synclient TouchpadOff=0") }, // disables touchpas
-	{ 0,					XF86XK_MonBrightnessUp,		spawn,			SHCMD("backlight +10") }, // increases screen brightness (runs script)
-	{ 0,					XF86XK_MonBrightnessDown,	spawn,			SHCMD("backlight -10") }, // decreases screen brightness (runs script)
+	{ 0,					XF86XK_MonBrightnessUp,		spawn,			SHCMD("backlight +100") }, // increases screen brightness (runs script)
+	{ 0,					XF86XK_MonBrightnessDown,	spawn,			SHCMD("backlight -100") }, // decreases screen brightness (runs script)
 	/* { MODKEY,                       XK_space,  setlayout,      {0} }, */
 	/* { MODKEY,                       XK_comma,  focusmon,       {.i = -1 } }, */
 	/* { MODKEY,                       XK_period, focusmon,       {.i = +1 } }, */
